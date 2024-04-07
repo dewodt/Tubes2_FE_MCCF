@@ -21,8 +21,8 @@ export default function Home() {
             </h1>
             <p className="text-base font-normal text-muted-foreground lg:text-xl">
               WikiRace is a game where player navigate from one Wikipedia page
-              to another using only internal links. We use BFS and IDS to solve
-              the game.
+              to another using only internal links. We use BFS and IDS algorithm
+              to solve the game.
             </p>
             <Link href="/play">
               <Button tabIndex={-1} size="lg">
