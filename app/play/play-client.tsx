@@ -1,5 +1,6 @@
 "use client";
 
+import { WikipediaInput } from "./wikipedia-input";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -18,25 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PlayFormSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Search, Waypoints } from "lucide-react";
+import { ArrowRight, Waypoints } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const PlayFormSchema = z.object({
-  algorithm: z.enum(["IDS", "BFS"], {
-    errorMap: () => ({
-      message: "Please select an algorithm to use.",
-    }),
-  }),
-  start: z
-    .string({ required_error: "Please enter a starting wikipedia page." }) // Null
-    .min(1, "Please enter a starting wikipedia page."), // Empty string,
-  target: z
-    .string({ required_error: "Please enter a target wikipedia page." }) // Null
-    .min(1, "Please enter a target wikipedia page."), // Empty string
-});
 
 const PlayClient = () => {
   const form = useForm<z.infer<typeof PlayFormSchema>>({
@@ -45,7 +32,7 @@ const PlayClient = () => {
 
   function onSubmit(data: z.infer<typeof PlayFormSchema>) {
     toast.success("You submitted the following values:", {
-      description: "Tes",
+      description: JSON.stringify(data, null, 2),
     });
   }
 
@@ -99,11 +86,17 @@ const PlayClient = () => {
               <FormField
                 control={form.control}
                 name="start"
-                render={({ field }) => (
+                render={({ field: { value, name }, ...field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Start</FormLabel>
                     <FormControl>
-                      <Input placeholder="Insert start" {...field} />
+                      <WikipediaInput
+                        placeholder="Insert start"
+                        name={name} // For setValue field identifier
+                        value={value}
+                        setValue={form.setValue} // RHF setValue(field, value)
+                        {...field} // Rest of props
+                      />
                     </FormControl>
                     <FormDescription>
                       Wikipedia title of the starting page
@@ -120,11 +113,17 @@ const PlayClient = () => {
               <FormField
                 control={form.control}
                 name="target"
-                render={({ field }) => (
+                render={({ field: { value, name }, ...field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Target</FormLabel>
                     <FormControl>
-                      <Input placeholder="Insert target" {...field} />
+                      <WikipediaInput
+                        placeholder="Insert target"
+                        name={name} // For setValue field identifier
+                        value={value}
+                        setValue={form.setValue} // RHF setValue(field, value)
+                        {...field} // Rest props
+                      />
                     </FormControl>
                     <FormDescription>
                       Wikipedia title of the target page
