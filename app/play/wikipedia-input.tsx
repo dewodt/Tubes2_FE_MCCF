@@ -1,7 +1,9 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { queryClient } from "@/lib/query";
 import { PlayFormSchema } from "@/lib/zod";
+import type { Article } from "@/types/api";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { useQuery } from "@tanstack/react-query";
 import { CircleAlert, FileText, Loader2 } from "lucide-react";
@@ -19,11 +21,7 @@ export interface WikipediaInputProps
 }
 
 // Recommendation data structure
-interface Recommendation {
-  title: string;
-  description: string;
-  thumbnail: string;
-}
+type Recommendation = Omit<Article, "url">;
 
 // Fetch recommendations from Wikipedia API
 const recommendationFetcher = async (
@@ -60,6 +58,7 @@ const recommendationFetcher = async (
     for (const pageId in data.query.pages) {
       const page = data.query.pages[pageId];
       recommendations.push({
+        id: page.pageid,
         title: page.title as string,
         description: page.terms?.description?.[0] ?? "",
         thumbnail: page.thumbnail?.source ?? "",
@@ -94,7 +93,7 @@ const WikipediaInput = React.forwardRef<HTMLInputElement, WikipediaInputProps>(
       2. [] => no recommendations found
       3. isPending => loading
       4. isError => error
-      3. other => recommendation[]
+      5. other => recommendation[]
     */
     const [recommendations, setRecommendations] = React.useState<
       Recommendation[] | undefined
@@ -184,7 +183,7 @@ const WikipediaInput = React.forwardRef<HTMLInputElement, WikipediaInputProps>(
             {isPending ? (
               <div className="flex flex-row items-center justify-center gap-2 p-4 text-muted-foreground">
                 <Loader2 className="size-4 flex-none animate-spin" />
-                <p className="text-sm ">Loading...</p>
+                <p className="text-sm">Loading...</p>
               </div>
             ) : isError ? (
               <div className="flex flex-row items-center justify-center gap-2 p-4 text-destructive">
@@ -198,42 +197,46 @@ const WikipediaInput = React.forwardRef<HTMLInputElement, WikipediaInputProps>(
               </div>
             ) : (
               recommendations &&
-              recommendations.map((recommendation) => {
+              recommendations.map((recommendation, idx) => {
                 return (
-                  <button
-                    key={recommendation.title}
-                    type="button"
-                    className="flex w-full flex-row items-center gap-2 p-2 transition-colors duration-150 ease-in-out hover:bg-muted"
-                    onClick={() => {
-                      // Close recommendations
-                      setIsPopupActive(false);
-                      setRecommendations(undefined);
+                  <>
+                    <button
+                      key={recommendation.id}
+                      type="button"
+                      className="flex h-[72px] w-full flex-row items-center gap-2 p-2 transition-colors duration-150 ease-in-out hover:bg-muted"
+                      onClick={() => {
+                        // Close recommendations
+                        setIsPopupActive(false);
+                        setRecommendations(undefined);
 
-                      // Update the form value
-                      setValue(name, recommendation.title);
-                    }}
-                  >
-                    {/* Image Preview */}
-                    <Avatar className="size-10 rounded-md border border-border">
-                      <AvatarImage
-                        className="size-full object-cover object-center"
-                        src={recommendation.thumbnail}
-                      />
-                      <AvatarFallback className="size-full rounded-md">
-                        <FileText className="stroke-gray-500 stroke-2" />
-                      </AvatarFallback>
-                    </Avatar>
+                        // Update the form value
+                        setValue(name, recommendation.title);
+                      }}
+                    >
+                      {/* Image Preview */}
+                      <Avatar className="size-[50px] rounded-md border border-border">
+                        <AvatarImage
+                          className="size-full object-cover object-center"
+                          src={recommendation.thumbnail}
+                        />
+                        <AvatarFallback className="size-full rounded-md">
+                          <FileText className="size-6 stroke-gray-500 stroke-2" />
+                        </AvatarFallback>
+                      </Avatar>
 
-                    {/* Title & Description */}
-                    <div className="flex flex-col text-start ">
-                      <p className="text-sm font-medium">
-                        {recommendation.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {recommendation.description}
-                      </p>
-                    </div>
-                  </button>
+                      {/* Title & Description */}
+                      <div className="flex flex-col gap-1 text-start">
+                        <p className="text-sm font-medium leading-none">
+                          {recommendation.title}
+                        </p>
+                        <p className="line-clamp-2 text-xs text-muted-foreground">
+                          {recommendation.description}
+                        </p>
+                      </div>
+                    </button>
+
+                    {idx < recommendations.length - 1 && <Separator />}
+                  </>
                 );
               })
             )}
