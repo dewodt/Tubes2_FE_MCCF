@@ -1,5 +1,7 @@
 "use client";
 
+import { ResultGraph } from "./result-graph";
+import { ResultList } from "./result-list";
 import { WikipediaInput } from "./wikipedia-input";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +20,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { mockResultResponse } from "@/lib/mock";
 import { PlayFormSchema } from "@/lib/zod";
+import { ResultResponse } from "@/types/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Waypoints } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -30,10 +36,18 @@ const PlayClient = () => {
     resolver: zodResolver(PlayFormSchema),
   });
 
+  /*
+   * Result state
+   * - undefined: No result yet (loading / error / initial state)
+   * - ResultResponse: Result data
+   */
+  const [result, setResult] = useState<ResultResponse | undefined>(undefined);
+
   function onSubmit(data: z.infer<typeof PlayFormSchema>) {
-    toast.success("You submitted the following values:", {
-      description: JSON.stringify(data, null, 2),
-    });
+    console.log(data);
+
+    // Mock data before the API is implemented
+    setResult(mockResultResponse);
   }
 
   return (
@@ -143,8 +157,65 @@ const PlayClient = () => {
         </Form>
       </section>
 
+      <ResultGraph
+        articles={mockResultResponse.articles}
+        paths={mockResultResponse.paths}
+      />
+
       {/* Result Section */}
-      <section></section>
+      {result && (
+        <section className="flex flex-col items-center gap-12 lg:gap-16">
+          {/* Result Message */}
+          <p className="max-w-2xl text-center text-base lg:text-xl">
+            Traversed a total of{" "}
+            <span className="font-semibold text-primary">
+              {result.totalTraversed} articles
+            </span>{" "}
+            in{" "}
+            <span className="font-semibold text-primary">
+              {result.duration} seconds
+            </span>{" "}
+            where the shortest path from{" "}
+            <Link
+              href={result.articles[0].url}
+              className="font-semibold text-primary  underline-offset-4 hover:underline"
+            >
+              result.articles[0].title
+            </Link>{" "}
+            to{" "}
+            <Link
+              href={result.articles[result.articles.length - 1].url}
+              className="font-semibold text-primary  underline-offset-4 hover:underline"
+            >
+              {result.articles[result.articles.length - 1].title}
+            </Link>{" "}
+            is{" "}
+            <span className="font-semibold text-primary">
+              {result.shortestPathLength} articles
+            </span>
+          </p>
+
+          {/* Result path (Graph) */}
+          <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:gap-6">
+            <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
+              Graph Visualization
+            </h2>
+          </div>
+
+          {/* Result path (List) */}
+          <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:gap-6">
+            <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
+              Individual Paths
+            </h2>
+            <div className="flex flex-row flex-wrap items-center justify-center gap-6 lg:gap-8">
+              {result.paths.map((path, idx) => {
+                const data = path.map((idx) => result.articles[idx]);
+                return <ResultList key={idx} data={data} />;
+              })}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 };
