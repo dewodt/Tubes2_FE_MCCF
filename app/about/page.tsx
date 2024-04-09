@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="flex flex-auto flex-col items-center justify-center gap-10 p-6 py-12 sm:p-12 lg:gap-16 lg:p-24">
+    <main className="flex flex-auto flex-col items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
       {/* Contact Me */}
       <section className="max-w-2xl">
         <Card className="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">

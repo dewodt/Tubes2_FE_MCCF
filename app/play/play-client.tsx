@@ -20,7 +20,7 @@ const PlayClient = () => {
   return (
     <>
       {/* Form Section */}
-      <section className="flex w-full max-w-3xl flex-col gap-5">
+      <section className="flex w-full max-w-3xl flex-col gap-4 lg:gap-6">
         {/* Title */}
         <h1 className="text-center text-3xl font-bold tracking-wide lg:text-5xl">
           WikiRace
@@ -32,7 +32,7 @@ const PlayClient = () => {
 
       {/* Result Section */}
       {result && (
-        <section className="flex flex-col items-center gap-12 lg:gap-16">
+        <section className="flex flex-col items-center gap-8 lg:gap-16">
           {/* Result Message */}
           <div className="flex w-full max-w-2xl flex-col items-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
@@ -47,7 +47,7 @@ const PlayClient = () => {
             />
           </div>
 
-          {/* Result path (Graph) */}
+          {/* Result Graph */}
           <div className="flex w-full max-w-3xl flex-col items-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
               Graph Visualization
@@ -55,7 +55,7 @@ const PlayClient = () => {
             <ResultGraph articles={result.articles} paths={result.paths} />
           </div>
 
-          {/* Result path (List) */}
+          {/* Result Lists */}
           <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
               Individual Paths

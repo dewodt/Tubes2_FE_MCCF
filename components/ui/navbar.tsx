@@ -62,7 +62,7 @@ const NavBar = ({
       <Link
         tabIndex={1}
         href="/"
-        className="font-inter flex flex-row items-center gap-2 text-xl font-medium tracking-wide"
+        className="flex flex-row items-center gap-2 font-inter text-xl font-medium tracking-wide"
       >
         <Image
           width={40}
@@ -85,7 +85,7 @@ const NavBar = ({
       </Button>
 
       <div
-        className={`font-inter fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l-2 border-l-border bg-background p-5 text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:dark:bg-transparent xl:text-lg ${
+        className={`fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l-2 border-l-border bg-background p-6 font-inter text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:dark:bg-transparent xl:text-lg ${
           navBarExpanded ? "translate-x-0" : "translate-x-full"
         }`}
       >

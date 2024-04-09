@@ -48,7 +48,7 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-4"
       >
         {/* Algorithm Select Field */}
         <FormField
@@ -77,7 +77,7 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
           )}
         />
 
-        <div className="flex flex-col gap-5 sm:flex-row sm:gap-2">
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
           {/* Start Field */}
           <FormField
             control={form.control}
