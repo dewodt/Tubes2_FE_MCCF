@@ -157,49 +157,53 @@ const PlayClient = () => {
         </Form>
       </section>
 
-      <ResultGraph
-        articles={mockResultResponse.articles}
-        paths={mockResultResponse.paths}
-      />
-
       {/* Result Section */}
       {result && (
         <section className="flex flex-col items-center gap-12 lg:gap-16">
           {/* Result Message */}
-          <p className="max-w-2xl text-center text-base lg:text-xl">
-            Traversed a total of{" "}
-            <span className="font-semibold text-primary">
-              {result.totalTraversed} articles
-            </span>{" "}
-            in{" "}
-            <span className="font-semibold text-primary">
-              {result.duration} seconds
-            </span>{" "}
-            where the shortest path from{" "}
-            <Link
-              href={result.articles[0].url}
-              className="font-semibold text-primary  underline-offset-4 hover:underline"
-            >
-              result.articles[0].title
-            </Link>{" "}
-            to{" "}
-            <Link
-              href={result.articles[result.articles.length - 1].url}
-              className="font-semibold text-primary  underline-offset-4 hover:underline"
-            >
-              {result.articles[result.articles.length - 1].title}
-            </Link>{" "}
-            is{" "}
-            <span className="font-semibold text-primary">
-              {result.shortestPathLength} articles
-            </span>
-          </p>
+          <div className="flex w-full max-w-2xl flex-col items-center gap-4 lg:gap-6">
+            <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
+              Information
+            </h2>
+            <p className="text-center text-base lg:text-xl">
+              Traversed a total of{" "}
+              <span className="font-semibold text-primary">
+                {result.totalTraversed} articles
+              </span>{" "}
+              in{" "}
+              <span className="font-semibold text-primary">
+                {result.duration} seconds
+              </span>{" "}
+              where the shortest path from{" "}
+              <Link
+                href={result.articles[0].url}
+                className="font-semibold text-primary underline-offset-4 hover:underline"
+              >
+                {result.articles[0].title}
+              </Link>{" "}
+              to{" "}
+              <Link
+                href={result.articles[result.articles.length - 1].url}
+                className="font-semibold text-primary  underline-offset-4 hover:underline"
+              >
+                {result.articles[result.articles.length - 1].title}
+              </Link>{" "}
+              is{" "}
+              <span className="font-semibold text-primary">
+                {result.shortestPathLength} articles
+              </span>
+            </p>
+          </div>
 
           {/* Result path (Graph) */}
-          <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:gap-6">
+          <div className="flex w-full max-w-3xl flex-col items-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
               Graph Visualization
             </h2>
+            <ResultGraph
+              articles={mockResultResponse.articles}
+              paths={mockResultResponse.paths}
+            />
           </div>
 
           {/* Result path (List) */}
