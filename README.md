@@ -5,7 +5,7 @@
 1. Make sure Docker Desktop is running
 2. For development (with hot reload), run
 
-- Build docker image
+- Build docker image (once)
 
 ```bash
 docker compose -f "docker-compose.development.yml" build
