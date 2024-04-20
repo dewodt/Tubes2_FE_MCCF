@@ -5,5 +5,6 @@ services:
     build: .
     environment:
       - NODE_ENV=production
+      - NEXT_PUBLIC_BE_URL=${NEXT_PUBLIC_BE_URL}
     ports:
       - 3000:3000

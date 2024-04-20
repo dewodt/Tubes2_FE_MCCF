@@ -24,10 +24,16 @@ import type { ResultResponse } from "@/types/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Waypoints } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 interface PlayFormProps {
   setResult: React.Dispatch<React.SetStateAction<ResultResponse | undefined>>;
+}
+
+interface FieldError {
+  field: keyof z.infer<typeof PlayFormSchema>;
+  message: string;
 }
 
 const PlayForm = ({ setResult }: PlayFormProps) => {
@@ -37,12 +43,53 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
   });
 
   // Submit handler
-  function onSubmit(data: z.infer<typeof PlayFormSchema>) {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof PlayFormSchema>) => {
+    // Initiate loading toast
+    const loadingToast = toast.loading("Loading...", {
+      description: "Please wait",
+      duration: Infinity,
+    });
 
-    // Mock data before the API is implemented
-    setResult(mockResultResponse);
-  }
+    // Create form data
+    const formData = new FormData();
+    formData.append("algorithm", data.algorithm);
+    formData.append("start", data.start);
+    formData.append("target", data.target);
+
+    // Fetch data
+    const endpoint = `${process.env.NEXT_PUBLIC_BE_URL}/play`;
+    const res = await fetch(endpoint, {
+      method: "POST",
+      body: formData,
+    });
+    const resJSON = await res.json();
+
+    // Remove loading toast
+    toast.dismiss(loadingToast);
+
+    // Error response
+    if (!res.ok) {
+      toast.error(resJSON.error, { description: resJSON.message });
+
+      // Return if there's no error paths
+      if (!resJSON.errorFields) return;
+
+      // Trigger error focus
+      resJSON.errorFields.forEach((item: FieldError) => {
+        form.setError(
+          item.field,
+          { message: item.message },
+          { shouldFocus: true },
+        );
+      });
+
+      return;
+    }
+
+    // Success response
+    // Show success toast
+    toast.success("Success", { description: "Shortest path found" });
+  };
 
   return (
     <Form {...form}>

@@ -8,6 +8,7 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
+      - NEXT_PUBLIC_BE_URL=${NEXT_PUBLIC_BE_URL}
       #if you’re using Windows, you may need to uncomment the next line - Sol from @Kobe E
       #- WATCHPACK_POLLING=true
     volumes:
