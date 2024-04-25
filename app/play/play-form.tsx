@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { mockResultResponse } from "@/lib/mock";
 import { PlayFormSchema } from "@/lib/zod";
 import type { ResultResponse } from "@/types/api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +43,9 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
 
   // Submit handler
   const onSubmit = async (data: z.infer<typeof PlayFormSchema>) => {
+    // Reset previous result
+    setResult(undefined);
+
     // Initiate loading toast
     const loadingToast = toast.loading("Loading...", {
       description: "Please wait",
@@ -89,6 +91,7 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
     // Success response
     // Show success toast
     toast.success("Success", { description: "Shortest path found" });
+    setResult(resJSON);
   };
 
   return (
@@ -104,7 +107,11 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Algorithm</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={form.formState.isSubmitting}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select algorithm" />
@@ -138,6 +145,7 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
                     name={name} // For setValue field identifier
                     value={value}
                     setValue={form.setValue} // RHF setValue(field, value)
+                    disabled={form.formState.isSubmitting}
                     {...field} // Rest of props
                   />
                 </FormControl>
@@ -165,6 +173,7 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
                     name={name} // For setValue field identifier
                     value={value}
                     setValue={form.setValue} // RHF setValue(field, value)
+                    disabled={form.formState.isSubmitting}
                     {...field} // Rest props
                   />
                 </FormControl>
@@ -178,7 +187,12 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
         </div>
 
         {/* Submit Button */}
-        <Button type="submit" size="lg" className="w-full items-center">
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full items-center"
+          disabled={form.formState.isSubmitting}
+        >
           <Waypoints className="mr-2 size-5" />
           <span>Find Shortest Path</span>
         </Button>
