@@ -28,6 +28,7 @@ const ResultMessage = ({
       where the shortest path from{" "}
       <Link
         href={startArticle.url}
+        target="_blank"
         className="font-semibold text-primary underline-offset-4 hover:underline"
       >
         {startArticle.title}
@@ -35,6 +36,7 @@ const ResultMessage = ({
       to{" "}
       <Link
         href={endArticle.url}
+        target="_blank"
         className="font-semibold text-primary  underline-offset-4 hover:underline"
       >
         {endArticle.title}

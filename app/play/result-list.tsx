@@ -16,7 +16,7 @@ const ResultList = ({ data }: ResultListProps) => {
       {data.map((article, idx) => {
         return (
           <>
-            <Link key={article.id} href={article.url}>
+            <Link key={article.id} href={article.url} target="_blank">
               <article className="flex h-[72px] flex-row items-center gap-2 p-2 transition-colors duration-150 ease-in-out hover:bg-muted">
                 {/* Image Preview */}
                 <Avatar className="size-[50px] rounded-md border border-border">
