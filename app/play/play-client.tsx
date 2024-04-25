@@ -32,7 +32,7 @@ const PlayClient = () => {
 
       {/* Result Section */}
       {result && (
-        <section className="flex flex-col items-center gap-8 lg:gap-16">
+        <section className="flex w-full flex-col items-center gap-8 lg:gap-16">
           {/* Result Message */}
           <div className="flex w-full max-w-2xl flex-col items-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
@@ -56,11 +56,11 @@ const PlayClient = () => {
           </div>
 
           {/* Result Lists */}
-          <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:gap-6">
+          <div className="flex w-full max-w-4xl flex-col items-center justify-center gap-4 lg:gap-6">
             <h2 className="text-center text-xl font-bold tracking-wide lg:text-3xl">
               Individual Paths
             </h2>
-            <div className="flex flex-row flex-wrap items-center justify-center gap-6 lg:gap-8">
+            <div className="flex w-full flex-row flex-wrap items-center justify-center gap-6 lg:gap-8">
               {result.paths.map((path, idx) => {
                 const data = path.map((idx) => result.articles[idx]);
                 return <ResultList key={idx} data={data} />;
