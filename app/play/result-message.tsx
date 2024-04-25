@@ -24,7 +24,10 @@ const ResultMessage = ({
       <span className="font-semibold text-primary">
         {totalTraversed} articles
       </span>{" "}
-      in <span className="font-semibold text-primary">{duration} seconds</span>{" "}
+      in{" "}
+      <span className="font-semibold text-primary">
+        {duration.toFixed(2)} seconds
+      </span>{" "}
       where the shortest path from{" "}
       <Link
         href={startArticle.url}
