@@ -1,6 +1,6 @@
 // Wikipedia Article Data Structure
 export interface Article {
-  id: number; // Article ID
+  id: string; // Article ID (QXXX)
   title: string; // Article Title
   description: string; // Article Description
   thumbnail: string; // Article Thumbnail (wikipedia image url)
