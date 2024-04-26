@@ -39,11 +39,14 @@ const PlayClient = () => {
               Information
             </h2>
             <ResultMessage
+              totalSolutionFound={result.paths.length}
               totalTraversed={result.totalTraversed}
               duration={result.duration}
-              shortestPathLength={result.shortestPathLength-1}
-              startArticle={result.articles[0]}
-              endArticle={result.articles[result.paths[0][result.paths[0].length-1]]}
+              shortestPathLength={result.shortestPathLength - 1}
+              startArticle={result.articles[result.paths[0][0]]}
+              endArticle={
+                result.articles[result.paths[0][result.paths[0].length - 1]]
+              }
             />
           </div>
 

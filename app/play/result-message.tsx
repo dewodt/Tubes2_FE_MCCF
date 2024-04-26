@@ -5,6 +5,7 @@ import Link from "next/link";
 
 interface ResultMessageProps {
   totalTraversed: number;
+  totalSolutionFound: number;
   duration: number;
   shortestPathLength: number;
   startArticle: Article;
@@ -13,6 +14,7 @@ interface ResultMessageProps {
 
 const ResultMessage = ({
   totalTraversed,
+  totalSolutionFound,
   duration,
   shortestPathLength,
   startArticle,
@@ -24,7 +26,9 @@ const ResultMessage = ({
       <span className="font-semibold text-primary">
         {totalTraversed} articles
       </span>{" "}
-      in{" "}
+      and found a total of{" "}
+      <span className="font-semibold text-primary">{totalSolutionFound}</span>{" "}
+      path solutions in{" "}
       <span className="font-semibold text-primary">
         {duration.toFixed(2)} seconds
       </span>{" "}
