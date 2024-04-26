@@ -42,8 +42,8 @@ const PlayClient = () => {
               totalTraversed={result.totalTraversed}
               duration={result.duration}
               shortestPathLength={result.shortestPathLength}
-              startArticle={result.articles[0]}
-              endArticle={result.articles[result.articles.length - 1]}
+              startArticle={result.paths[0][0]}
+              endArticle={result.paths[0][result.paths[0].length-1]}
             />
           </div>
 
