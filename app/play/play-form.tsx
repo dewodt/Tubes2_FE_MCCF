@@ -57,13 +57,35 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
     formData.append("algorithm", data.algorithm);
     formData.append("start", data.start);
     formData.append("target", data.target);
+    formData.append("pathSolutionOption", data.pathSolutionOption);
 
-    // Fetch data
-    const endpoint = `${process.env.NEXT_PUBLIC_BE_URL}/play`;
-    const res = await fetch(endpoint, {
-      method: "POST",
-      body: formData,
-    });
+    let res: Response;
+
+    try {
+      // Fetch data
+      const endpoint = `${process.env.NEXT_PUBLIC_BE_URL}/play`;
+      res = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+      });
+    } catch (error) {
+      // Catch fetch error (timeout)
+      // Remove loading toast
+      toast.dismiss(loadingToast);
+
+      if (typeof error === "string") {
+        toast.error("Error", { description: error });
+      } else if (error instanceof Error) {
+        // Type error or any other error (includes network error, timeout, etc.)
+        toast.error("Error", { description: error.message });
+      } else {
+        toast.error("Error", { description: "Failed to find shortest path" });
+      }
+
+      return;
+    }
+
+    // Parse response to json
     const resJSON = await res.json();
 
     // Remove loading toast
@@ -125,6 +147,36 @@ const PlayForm = ({ setResult }: PlayFormProps) => {
               <FormDescription>
                 Algorithm used to find the shortest wikipedia path from start to
                 target.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Path Solution Option (Single / Multiple) */}
+        <FormField
+          control={form.control}
+          name="pathSolutionOption"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Solution Option</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={form.formState.isSubmitting}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select solution option" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="single">Single</SelectItem>
+                  <SelectItem value="multiple">Multiple</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Get single or multiple path solutions
               </FormDescription>
               <FormMessage />
             </FormItem>
