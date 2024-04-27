@@ -218,6 +218,9 @@ const WikipediaInput = React.forwardRef<HTMLInputElement, WikipediaInputProps>(
                       {/* Image Preview */}
                       <Avatar className="size-[50px] rounded-md border border-border">
                         <AvatarImage
+                          width={50}
+                          height={50}
+                          sizes="50px"
                           className="size-full object-cover object-center"
                           src={recommendation.thumbnail}
                         />
