@@ -1,4 +1,4 @@
-# Wikirace
+# Wikirace Front-End
 
 ## Penjelasan Algoritma IDS dan BFS
 
